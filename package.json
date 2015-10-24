@@ -1,0 +1,16 @@
+{
+  "name": "portal",
+  "version": "1.0.0",
+  "description": "Call remote methods as if they were local",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/JavaScriptSandbox/portal.git"
+  },
+  "author": "Oliver Brooks <realolliebee@gmail.com>",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/JavaScriptSandbox/portal#readme"
+}
