@@ -4,13 +4,29 @@
   "description": "Call remote methods as if they were local",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@bitbucket.org/JavaScriptSandbox/portal.git"
   },
-  "author": "Oliver Brooks <realolliebee@gmail.com>",
+  "author": "Oliver Brooks <real.ollie.bee@gmail.com>",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/JavaScriptSandbox/portal#readme"
+  "homepage": "https://bitbucket.org/JavaScriptSandbox/portal#readme",
+  "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-jasmine": "^2.1.0",
+    "gulp-typescript": "^2.9.2",
+    "jasmine": "^2.3.2",
+    "nodemon": "^1.8.0",
+    "tsd": "^0.6.5",
+    "typescript": "^1.8.0-dev.20151102"
+  },
+  "dependencies": {
+    "angular2": "^2.0.0-alpha.44",
+    "express": "^4.13.3",
+    "socket.io": "^1.3.7",
+    "systemjs": "^0.19.5"
+  }
 }
