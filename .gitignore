@@ -1,0 +1,6 @@
+node_modules
+dist
+test
+.c9
+.vscode
+npm-debug.log
