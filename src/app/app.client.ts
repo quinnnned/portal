@@ -1,30 +1,40 @@
-import {Component} from 'angular2/angular2';
-import {Module, Module2} from './bits/hub/hub.client';
-import {Socket} from './bits/socket/socket.client';
-import {InvokrTest} from './bits/invokrTest/invokrTest.client';
-import {Invokable} from './bits/invokr/invokr.client';
 
-@Invokable('AppComponent')
+
+import {Component} from 'angular2/angular2';
+import {My} from './bits/framework/my.shared';
+import {LiveObjectFactory} from './bits/framework/live-object-factory.client';
+
 @Component({
     selector: 'my-app',
-    template: '<h1>My First {{thing}} {{stuff}} Angular 2 App</h1>'
+    template: `
+        <p>{{my.time}}</p>
+        <a (click) = "clickedThere()" href="#" >click here</a>
+        
+        
+        <h1>Time: {{my.time}}</h1>
+        <p>{{my.address.streetAddress}}</p>
+        <p>{{my.address.city}},{{my.address.state}} {{my.address.zip}}</p>
+        
+    `
+    // <p>{{my.aNumber}}</p>
+        // <p>{{my.aString}}</p>
+        // <p>{{my.any}}</p>
+        // <p>{{my.void}}</p>
+        // <p>{{my.numberArray}}</p>
+        // <p>{{my.stringArray}}</p>
+        // <p>{{my.aBoolean}}</p>
+        // <p>{{my.addressArray}}</p>
+        
 })
 export class AppComponent { 
     
-    constructor(private module:Module, private module2:Module2) {
-        var socket = new Socket();
-        
-        let test = new InvokrTest();
-        
-        this.invokables.myfunction("blah");
+    public my:My;
+   
+    constructor(private LiveObjectFactory:LiveObjectFactory) {
+        this.my = LiveObjectFactory.my;
     }
     
-    public thing:string = 'this is a thing';
-    
-    public stuff:string = 'and some stuff';
-    
-    @Invokable('myfunction')
-    public thingfunction(data) {
-        console.log(data);
+    clickedThere() : void {    
+        this.my.like();
     }
 }

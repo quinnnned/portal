@@ -1,9 +1,12 @@
+/// <reference path="./typings/gulp-nodemon/gulp-nodemon.d.ts" />
+
 var gulp    = require('gulp'),
     ts      = require('gulp-typescript')('tsconfig.json',{
                 typescript: require('typescript')
     }),
     jasmine = require('gulp-jasmine')({verbose:true}),
     del     = require('del'),
+    nodemon = require('gulp-nodemon'),
     config = {
         files: {
             typings : {
@@ -13,7 +16,8 @@ var gulp    = require('gulp'),
             },
             vendors : {
                 angular : 'node_modules/angular2/bundles/angular2.dev.js',
-                system : 'node_modules/systemjs/dist/system.src.js'
+                system : 'node_modules/systemjs/dist/system.src.js',
+                reflect : 'node_modules/reflect-metadata/Reflect.js'
             },
             src: { // ts & html source (consider jade?)
                 ts: 'src/**/*.ts',
@@ -24,6 +28,7 @@ var gulp    = require('gulp'),
                 specs  : 'test/**/*.spec.js',
                 client : 'test/**/*.client.js',
                 server : 'test/**/*.server.js',
+                shared : 'test/**/*.shared.js'
             },
             dist: { // 
                 root: 'dist/',
@@ -83,18 +88,41 @@ gulp.task('dist.client.js', ['prepare.dist'], function(){
     return gulp
         .src([ //Define concatenation order
             config.files.vendors.system, 
-            config.files.vendors.angular, 
+            config.files.vendors.angular,
+            config.files.vendors.reflect, 
             config.files.test.client ])
         .pipe(gulp.dest(config.files.dist.client.js));
 });
 
-gulp.task('dist.server.js', ['prepare.dist'], function(){
+gulp.task('dist.server.js', ['prepare.dist'], function() {
     return gulp
         .src(config.files.test.server)
         .pipe(gulp.dest(config.files.dist.server));
 });
 
-gulp.task('dist', ['dist.etc','dist.client.js','dist.server.js']); //, , 
+gulp.task('dist.shared.js', ['prepare.dist'], function() {
+    return gulp
+        .src(config.files.test.shared)
+        .pipe(gulp.dest(config.files.dist.server))
+        .pipe(gulp.dest(config.files.dist.client.js));
+});
+
+gulp.task('dist', ['dist.etc','dist.client.js','dist.server.js', 'dist.shared.js']); 
+
+gulp.task('develop', ['dist'], function() {
+   nodemon({
+       script: 'dist/server/app/app.server.js',
+       ext: 'ts html css',
+       watch: ['src/'],
+       tasks: ['dist'],
+       stdout:true,
+       env: {
+           'PORT':'8080',
+           'IP':'0.0.0.0'
+       },
+       verbose: true,
+   }).on('stdout',console.log).on('stderr',console.error);
+});
 
 gulp.task('default', ['dist']);
 

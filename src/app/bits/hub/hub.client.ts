@@ -1,11 +1,11 @@
 var providers = [];
 
-import * as module from '../module/module.client';
-providers.push(module.Module);
-export {Module} from '../module/module.client';
+import {Portal} from '../framework/portal.client';
+providers.push(Portal);
 
-import * as module2 from '../module2/module2.client';
-providers.push(module2.Module2);
-export {Module2} from '../module2/module2.client';
+import {LiveObjectFactory} from '../framework/live-object-factory.client';
+providers.push(LiveObjectFactory);
 
+
+console.log(providers);
 export var Providers = providers;
