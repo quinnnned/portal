@@ -10,7 +10,11 @@ export class Portal {
     
     constructor() {
         
-        this.socket = io.connect('http://localhost:8080/', {
+        let local = 'http://localhost:8080/';
+        
+        let cloud9 = 'https://portal-javascriptsandbox.c9.io/'
+        
+        this.socket = io.connect(cloud9, {
             transports: ['websocket', 'polling']
         });
         
@@ -31,7 +35,7 @@ export class Portal {
     }
     
     public subscribe(tag:string, callback:(data:any)=>void) {
-        console.log('subscribing to '+tag);
+        console.log('Subscribing to "%s"',tag);
         this.socket.on(tag, callback);    
     }
    
@@ -45,37 +49,5 @@ export class Portal {
             data:data
         });
     }
-     
-    // public getLiveThing(id : Number): any {
-    //     this.safeEmit('subscribe', { id : id } );
-    //     return ( (id : Number) => {
-    //         var thing : Whatever = new Whatever();
-    //         let proxyObject : any = new Proxy(thing, {
-    //             get: function(object:Object, property) {
-    //                 if (object[property] === undefined) return null;
-    //                 return object[property]
-    //             } 
-    //         }); 
-    //         this.socket.on(id.toString(), (newThing) => {
-    //             thing.time = newThing.time;
-    //             thing.thing = newThing.thing;
-    //             thing.ready = true;
-    //         }) 
-    //         return proxyObject; 
-    //     })(id);
-    // }
 }
-
-
-// export class Whatever {
-//     public ready: boolean = false;
-//     public name: String;
-//     public count: Number;
-//     public like() {
-        
-//     }
-//     public time: Number;
-//     public thing: Date;
-// }
-
 

@@ -1,40 +1,55 @@
+import {Component,NgFor} from 'angular2/angular2';
+import {LiveFramework, My} from './bits/framework/index.client';
 
-
-import {Component} from 'angular2/angular2';
-import {My} from './bits/framework/my.shared';
-import {LiveObjectFactory} from './bits/framework/live-object-factory.client';
-
-@Component({
-    selector: 'my-app',
-    template: `
-        <p>{{my.time}}</p>
-        <a (click) = "clickedThere()" href="#" >click here</a>
-        
-        
-        <h1>Time: {{my.time}}</h1>
+@Component({ 
+    selector: 'my-app', 
+    directives: [NgFor]
+    template:`
+        <p>The current time is {{my.time}}</p>
         <p>{{my.address.streetAddress}}</p>
-        <p>{{my.address.city}},{{my.address.state}} {{my.address.zip}}</p>
+        <p>{{my.address.city}}, {{my.address.state}} {{my.address.zip}}</p>
+        <a (click) = "my.address.like()" href="#" >like</a>
+        <div *ng-for="#intensityLevel of colors">
+        <table >
+          <tr *ng-for="#blueToGreen of intensityLevel">
+            <td *ng-for="#color of blueToGreen" style="background-color:{{color}}"> {{color}}</td>
+          </tr>
+        </table>
         
+        </div>
     `
-    // <p>{{my.aNumber}}</p>
-        // <p>{{my.aString}}</p>
-        // <p>{{my.any}}</p>
-        // <p>{{my.void}}</p>
-        // <p>{{my.numberArray}}</p>
-        // <p>{{my.stringArray}}</p>
-        // <p>{{my.aBoolean}}</p>
-        // <p>{{my.addressArray}}</p>
-        
 })
+
 export class AppComponent { 
     
     public my:My;
    
-    constructor(private LiveObjectFactory:LiveObjectFactory) {
-        this.my = LiveObjectFactory.my;
-    }
-    
-    clickedThere() : void {    
-        this.my.like();
+    constructor(private LiveFramework:LiveFramework) {
+        this.my = LiveFramework.my;
+        
+        this.colors = [];
+        
+        let hex = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+        
+        let i = 3*hex.length
+        
+        while(i>=0) {
+            this.colors[i]=[];
+             hex.forEach((r,ri)=>{
+                this.colors[i][ri] = [];
+                hex.forEach((g,gi)=>{
+                   hex.forEach((b,bi)=>{
+                     if (ri<=bi && ri<=gi && i==(ri+gi+bi)){
+                       let color = '#'+r+g+b
+                       this.colors[i][ri].push(color);
+                     } 
+                   });
+                });
+            });
+            i--;
+        }
+        
+       
+        
     }
 }

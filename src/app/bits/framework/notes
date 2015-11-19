@@ -1,0 +1,14 @@
+Goals:
+    * LiveObjects, updated automatically via websocket tag-based subscripton
+    * Each LiveObject has the following methods:
+        * .onChange()
+        * .unsubscribe()
+    * Object-properties of a live object are also live objects, subscribed on a get action
+    * LiveArrays - arrays of LiveObjects
+    * root LiveObject 'my'.  All LiveObjects and LiveArrays stem from here
+    * object consumer (angular2 component, probably) is ignorant of db actions
+    * simple Class-based persister with validation
+    * Permissions.
+    
+    
+let's say 'my'

@@ -6,19 +6,13 @@ import {My} from './my.shared';
 let whatever = ()=>{}; 
 
 @whatever
-export class LiveObjectFactory {
+export class LiveFramework {
 	
 	public my:My;
 	
 	constructor(private Portal:Portal) {
 		this.my = this.wrapObject(new My(), 'my');
 	}
-	
-	
-	
-	
-	
-	
 	
 	private wrapObject(object:any, objectTag:string) : any {
 		
@@ -55,8 +49,10 @@ export class LiveObjectFactory {
 			switch (propertyClass) {
 				// Undefined is always assumed to be a remote procedure call
 				case undefined: return (...args)=>{
-					console.log('RPC: %s(%s)', propertyTag,args);
-					console.log({wrapped:wrapped,subscribed:subscribed});
+					let arglist = JSON.stringify(args);
+					arglist = arglist.slice(1,arglist.length-1);
+					console.log('Remote procedure called: %s(%s)', propertyTag,arglist);
+					//console.log({wrapped:wrapped,subscribed:subscribed});
 				};
 				break; 
 				case Number: subscribe(property); return propertyValue; break;
