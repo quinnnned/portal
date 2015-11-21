@@ -1,13 +1,19 @@
+/// <reference path="../../../../typings/reflect-metadata/reflect-metadata.d.ts" />
+
 import {Address} from './address.shared'
+import {LiveField} from './live-framework.client'
 
-let whatever = ()=>{}
-
-@whatever
+@LiveField
 export class My {
 	
-	@whatever
+	@LiveField
 	public time:string;
 
-	@whatever
+	@LiveField
 	public address:Address;
+	
+	@LiveField
+	public like() {
+		console.log('liked');
+	}
 }

@@ -1,18 +1,20 @@
 
+import {LiveField} from './live-framework.client'
+
 let whatever = ()=>{}
 
-@whatever
+
 export class Address {
 	
-	@whatever
+	@LiveField
 	public streetAddress:string;
 	
-	@whatever
+	@LiveField
 	public city:string;
 	
-	@whatever
+	@LiveField
 	public state:string;
 	
-	@whatever
+	@LiveField
 	public zip:string;
 }

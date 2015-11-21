@@ -3,72 +3,79 @@
 import {Portal} from './portal.client';
 import {My} from './my.shared';
 
+
+export function LiveField(target, property) {
+	if (property === undefined) return;
+	let liveFieldsKey = 'LiveFramework:LiveFields';	
+	let liveFields = Reflect.getMetadata(liveFieldsKey, target) || [];
+	liveFields.push(property);
+	Reflect.defineMetadata(liveFieldsKey, liveFields, target);
+}
+
 let whatever = ()=>{}; 
 
 @whatever
 export class LiveFramework {
 	
+	private subscriptions = {}
+	
 	public my:My;
 	
 	constructor(private Portal:Portal) {
-		this.my = this.wrapObject(new My(), 'my');
+		this.my = this.getLiveObject(My, 'my');
 	}
 	
-	private wrapObject(object:any, objectTag:string) : any {
-		
-		let wrapped = {};
-		
-		let subscribed = {}
-		
-		let subscribe = (property) => {
-			
-			if (subscribed[property]) return;
-				
-			subscribed[property] = true;
-			let propertyTag = objectTag + '.' + property;	
-							
-			this.Portal.subscribe(propertyTag, (value) => {
-				object[property] = value;
-			});
+	private getLiveObject(objectClass, objectTag:string) : any {
+		if (this.subscriptions[objectTag]) {
+			return this.subscriptions[objectTag].wrapper;
 		}
 		
-		let wrap = (property, propertyClass) => {
-			if (!wrapped.hasOwnProperty(property)) {
-				let propertyTag = objectTag + '.' + property;	
-				wrapped[property] = this.wrapObject(new propertyClass(), propertyTag);
-			}	
-			return wrapped[property];
-		};
+		this.subscriptions[objectTag] = { real: new objectClass() }
 		
-		let getWrappedValue = (target, property) => {
-			let propertyValue = target[property];
-			let propertyTag = objectTag + '.' + property;
-			let propertyClass = Reflect.getMetadata('design:type', target, property);
-			
-						
-			switch (propertyClass) {
-				// Undefined is always assumed to be a remote procedure call
-				case undefined: return (...args)=>{
-					let arglist = JSON.stringify(args);
-					arglist = arglist.slice(1,arglist.length-1);
-					console.log('Remote procedure called: %s(%s)', propertyTag,arglist);
-					//console.log({wrapped:wrapped,subscribed:subscribed});
-				};
-				break; 
-				case Number: subscribe(property); return propertyValue; break;
-				case String: subscribe(property); return propertyValue; break;
-				case Boolean: subscribe(property); return propertyValue; break;
-				case Array: return []; break;
-				default: return wrap(property, propertyClass)
-			}	
-		}
+		let object = this.subscriptions[objectTag].real;
 		
-		return new Proxy(object, {
-			get : getWrappedValue,
-			set: () => {
-				console.log('LiveObjects are read-only');
-				//throw 'Live objects are read-only';
+		this.Portal.subscribe(objectTag, (objectUpdates) => {
+			for(property in objectUpdates) {
+				object[property] = objectUpdates[property];	
 			}
-		})
+		});
+		
+		let descriptors = {};
+		
+		Reflect.getMetadata('LiveFramework:LiveFields', object)
+			.forEach( (field) => {
+				
+			let propertyTag = objectTag + '.' + field;
+			
+			let propertyClass = Reflect.getMetadata('design:type', object, field);
+		
+			descriptors[field] = {
+				configurable: true,
+				enumerable: true,
+				get : () => {
+					let propertyValue = object[field];
+					switch (propertyClass) {
+						case Function : return function(){
+							console.log('RPC: ', {
+								tag: objectTag,
+								method: field,
+								class:objectClass.name,
+								arguments: arguments
+							});
+							propertyValue.apply(object, arguments);
+						}; break;
+						case Number   : return propertyValue; break;
+						case String   : return propertyValue; break;
+						case Boolean  : return propertyValue; break;
+						case Array    : return []; break;
+						default       : return this.getLiveObject(propertyClass, propertyTag);
+					}	
+				}
+			};
+		});
+		
+		this.subscriptions[objectTag].wrapper = Object.defineProperties(new objectClass(), descriptors); 
+		
+		return this.subscriptions[objectTag].wrapper; 
 	}
 }

@@ -6,9 +6,12 @@ import {LiveFramework, My} from './bits/framework/index.client';
     directives: [NgFor]
     template:`
         <p>The current time is {{my.time}}</p>
+        
         <p>{{my.address.streetAddress}}</p>
         <p>{{my.address.city}}, {{my.address.state}} {{my.address.zip}}</p>
-        <a (click) = "my.address.like()" href="#" >like</a>
+    
+         <a (click) = "my.like('thing',1,false)" href="#" >my.like</a>
+    
         <div *ng-for="#intensityLevel of colors">
         <table >
           <tr *ng-for="#blueToGreen of intensityLevel">
@@ -38,12 +41,12 @@ export class AppComponent {
              hex.forEach((r,ri)=>{
                 this.colors[i][ri] = [];
                 hex.forEach((g,gi)=>{
-                   hex.forEach((b,bi)=>{
+                  hex.forEach((b,bi)=>{
                      if (ri<=bi && ri<=gi && i==(ri+gi+bi)){
-                       let color = '#'+r+g+b
-                       this.colors[i][ri].push(color);
+                      let color = '#'+r+g+b
+                      this.colors[i][ri].push(color);
                      } 
-                   });
+                  });
                 });
             });
             i--;
