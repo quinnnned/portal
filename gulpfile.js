@@ -17,11 +17,13 @@ var gulp    = require('gulp'),
             vendors : {
                 angular : 'node_modules/angular2/bundles/angular2.dev.js',
                 system : 'node_modules/systemjs/dist/system.src.js',
-                reflect : 'node_modules/reflect-metadata/Reflect.js'
+                reflect : 'node_modules/reflect-metadata/Reflect.js',
+                bootstrap : 'node_modules/bootstrap/dist/**/*'
             },
             src: { // ts & html source (consider jade?)
                 ts: 'src/**/*.ts',
-                html: 'src/**/*.html'
+                html: 'src/**/*.html',
+                bootstrap: 'src/theme.css'
             },
             test: { // js testing environment
                 root   : 'test/',
@@ -35,7 +37,8 @@ var gulp    = require('gulp'),
                 client: {
                     root : 'dist/client/',
                     js   : 'dist/client/',
-                    css  : 'dist/client/css/'
+                    css  : 'dist/client/css/',
+                    bootstrap : 'dist/client/bootstrap/'
                 },
                 server: 'dist/server/'
             },
@@ -62,13 +65,13 @@ gulp.task('transpile.ts', ['clean.test'], function() {
         .pipe(gulp.dest(config.files.test.root));
 });
 
-gulp.task('transpile.html', ['clean.test'], function() {
+gulp.task('dist.html', ['prepare.dist'], function() {
    return gulp
     .src(config.files.src.html)
-    .pipe(gulp.dest(config.files.test.root));
+    .pipe(gulp.dest(config.files.dist.client.root));
 });
 
-gulp.task('prepare.test', ['transpile.ts','transpile.html']);
+gulp.task('prepare.test', ['transpile.ts']);
 
 gulp.task('test', ['prepare.test'], function() {
     return gulp
@@ -84,9 +87,18 @@ gulp.task('dist.etc', ['prepare.dist'], function(){
         .pipe(gulp.dest(config.files.dist.client.root));
 });
 
-gulp.task('dist.client.js', ['prepare.dist'], function(){
+gulp.task('dist.client.bootstrap', ['prepare.dist'], function() {
+   return gulp
+        .src([
+            config.files.vendors.bootstrap,
+            config.files.src.bootstrap
+            ])
+        .pipe(gulp.dest(config.files.dist.client.bootstrap));
+});
+
+gulp.task('dist.client.js', ['prepare.dist', 'dist.client.bootstrap'], function(){
     return gulp
-        .src([ //Define concatenation order
+        .src([
             config.files.vendors.system, 
             config.files.vendors.angular,
             config.files.vendors.reflect, 
@@ -107,7 +119,7 @@ gulp.task('dist.shared.js', ['prepare.dist'], function() {
         .pipe(gulp.dest(config.files.dist.client.js));
 });
 
-gulp.task('dist', ['dist.etc','dist.client.js','dist.server.js', 'dist.shared.js']); 
+gulp.task('dist', ['dist.etc','dist.client.js','dist.server.js', 'dist.shared.js', 'dist.html']); 
 
 gulp.task('develop', ['dist'], function() {
    nodemon({

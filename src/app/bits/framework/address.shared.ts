@@ -1,9 +1,6 @@
 
 import {LiveField} from './live-framework.client'
 
-let whatever = ()=>{}
-
-
 export class Address {
 	
 	@LiveField

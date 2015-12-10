@@ -1,0 +1,1 @@
+export var isServer = ('object' === typeof process && Object.prototype.toString.call(process) === '[object process]')

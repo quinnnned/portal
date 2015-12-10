@@ -22,6 +22,7 @@ export class Portal {
             this.socketQueue.forEach((item) => {
                 this.socket.emit(item.label, item.data);    
             });
+            this.socketQueue = [];
             this.socketConnected = true;
         });
         
@@ -42,6 +43,7 @@ export class Portal {
     private safeEmit(label:string, data:any):void {
         if (this.socketConnected) {
             this.socket.emit(label, data);
+            return;
         }
         
         this.socketQueue.push({
