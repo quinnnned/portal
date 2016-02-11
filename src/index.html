@@ -23,7 +23,10 @@
     <script src="https://code.angularjs.org/2.0.0-alpha.46/router.dev.js"></script>
     <script src="Reflect.js"></script>
     <script> 
-      System.config({ packages: { 'app': {defaultExtension: 'js'}, } });
+      System.config({ packages: { 
+        'app': {defaultExtension: 'js'},
+        'framework': {defaultExtension: 'js'} 
+      } });
       System.import('loader.client.js');
     </script>
   </head>

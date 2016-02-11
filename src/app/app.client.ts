@@ -1,10 +1,12 @@
 import {Component, View, NgFor} from 'angular2/angular2';
 import {ROUTER_DIRECTIVES, RouteConfig, Location} from 'angular2/router';
-import {LiveFramework, Portal} from './bits/framework/index.client';
+import {LiveFramework, Portal, My} from './bits/framework/index.client';
 import {Index} from './components/index/index.client';
 import {Games} from './components/games/games.client';
 import {Search} from './components/search/search.client';
 import {NavigationBar} from './components/nav/nav.client';
+import {Game} from './model/game.shared';
+import {getDataClasses} from '../framework/init.shared';
 
 @Component({
     selector: 'app', 
@@ -52,6 +54,10 @@ export class AppComponent {
     constructor(private LiveFramework:LiveFramework) {
         
         this.my = LiveFramework.my;
+        
+        //var thing = new Game();
+        
+        //console.log(`I made a ${thing.constructor.name}`);
         
         // this.colors = [];
         

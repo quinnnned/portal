@@ -18,6 +18,11 @@ export class Portal {
             transports: ['websocket', 'polling']
         });
         
+        this.socket.on('message', function(){
+            console.log(arguments);
+        });
+        
+        
         this.socket.on('connect', () => {            
             this.socketQueue.forEach((item) => {
                 this.socket.emit(item.label, item.data);    

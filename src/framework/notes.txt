@@ -1,0 +1,13 @@
+PERSISTER:
+* The persister's job is storage and retieval.
+* It does NOT know about classes or metadata.
+* It only deals with 'Persistable' objects and 'Link' objects
+* Persistable (Interface) means that it has getKey() :string and getGroup() :string
+* PersistableLink (Interface): getParentGroup():string, getChildGroup():string,
+* IDEA (for later) maybe each persister implemenation can have its own Persistable definition
+  * Use case: mysql/cassandra tables with composite keys
+  * The persistable interface would then just have:
+    * getRecordIdentifier() :any
+  * probably a requirement to be jsonable?
+  * maybe have a memory hashtable for the ids?
+  * dunno. Just ideas.
