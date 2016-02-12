@@ -19,6 +19,7 @@
     "gulp-jasmine": "^2.1.0",
     "gulp-nodemon": "^2.0.4",
     "gulp-typescript": "^2.9.2",
+    "gulp-webserver": "^0.9.1",
     "jasmine": "^2.3.2",
     "nodemon": "^1.8.0",
     "tsd": "^0.6.5",

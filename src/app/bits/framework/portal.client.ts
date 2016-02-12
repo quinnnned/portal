@@ -1,4 +1,4 @@
-import * as io from 'socket.io/socket.io.js';
+//import * as io from 'socket.io/socket.io.js';
 
 export class Portal {
 	

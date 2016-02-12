@@ -4,10 +4,11 @@ var gulp    = require('gulp'),
     ts      = require('gulp-typescript')('tsconfig.json',{
                 typescript: require('typescript')
     }),
-    jasmine = require('gulp-jasmine')({verbose:true}),
-    del     = require('del'),
-    nodemon = require('gulp-nodemon'),
-    config = {
+    jasmine   = require('gulp-jasmine')({verbose:true}),
+    del       = require('del'),
+    nodemon   = require('gulp-nodemon'),
+    webserver = require('gulp-webserver'),
+    config    = {
         files: {
             typings : {
                 all: 'typings/**/*.d.ts',
@@ -15,10 +16,11 @@ var gulp    = require('gulp'),
                 angular: 'typings/angular2/angular2.d.ts'
             },
             vendors : {
-                angular : 'node_modules/angular2/bundles/angular2.dev.js',
-                system : 'node_modules/systemjs/dist/system.src.js',
-                reflect : 'node_modules/reflect-metadata/Reflect.js',
-                bootstrap : 'node_modules/bootstrap/dist/**/*'
+                angular   : 'node_modules/angular2/bundles/angular2.dev.js',
+                system    : 'node_modules/systemjs/dist/system.src.js',
+                reflect   : 'node_modules/reflect-metadata/Reflect.js',
+                bootstrap : 'node_modules/bootstrap/dist/**/*', 
+                socket    : 'node_modules/socket.io/node_modules/socket.io-client/socket.io.js' // HAAAAAAACK TODO
             },
             src: { // ts & html source (consider jade?)
                 ts: 'src/**/*.ts',
@@ -101,7 +103,8 @@ gulp.task('dist.client.js', ['prepare.dist', 'dist.client.bootstrap'], function(
         .src([
             config.files.vendors.system, 
             config.files.vendors.angular,
-            config.files.vendors.reflect, 
+            config.files.vendors.reflect,
+            config.files.vendors.socket,
             config.files.test.client ])
         .pipe(gulp.dest(config.files.dist.client.js));
 });
@@ -121,11 +124,11 @@ gulp.task('dist.shared.js', ['prepare.dist'], function() {
 
 gulp.task('dist', ['dist.etc','dist.client.js','dist.server.js', 'dist.shared.js', 'dist.html']); 
 
-gulp.task('develop', ['dist'], function() {
+gulp.task('server', ['dist'], function() {
    nodemon({
        script: 'dist/server/app/app.server.js',
        ext: 'ts html css',
-       watch: ['src/'],
+       watch: ['src/**/*.server.ts'],
        tasks: ['dist'],
        stdout:true,
        env: {
@@ -135,6 +138,18 @@ gulp.task('develop', ['dist'], function() {
        verbose: true,
    }).on('stdout',console.log).on('stderr',console.error);
 });
+
+
+gulp.task('client', ['dist'], function() {
+    gulp.src('dist/client').pipe(webserver({
+        host : '0.0.0.0',
+        port : 8080
+    }));
+});
+
+
+gulp.task('dev', ['client', 'server']);
+
 
 gulp.task('default', ['dist']);
 
