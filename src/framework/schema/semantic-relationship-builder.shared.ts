@@ -10,6 +10,9 @@ export class SemanticRelationshipBuilder {
     
     private context = Context.Parent;
     
+    // Syntactic Sugar
+    public static An = SemanticRelationshipBuilder.A;
+    
     // Use this as entry point
     public static A(vertexClass) {
         // Some DI might be nice here
