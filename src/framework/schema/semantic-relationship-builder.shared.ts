@@ -75,3 +75,5 @@ export class SemanticRelationshipBuilder {
         return this.context == Context.Parent ? this : this.relationship;
     }
 }
+
+export var A = SemanticRelationshipBuilder.A;
