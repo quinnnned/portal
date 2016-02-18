@@ -1,45 +1,30 @@
-import {Schema} from '../../framework/index.shared';
-
-
-
-
+import {A, Schema} from '../../framework/index.shared';
+import {Game}      from 'game.shared';
+import {Rank}      from 'rank.shared';
 
 
 @Schema.Group('Users')
 export class User {
     
-    @Schema.Test
-    firstName       :string;
+    static SuggestsGames = A(User).has.many('suggestions')
+                      .but.a(Game).has.one('suggester');
+        
+    static RanksGames = A(User).has.many('rankings')
+                   .but.a(Rank).has.one('ranker');
     
-    @Schema.Test
-    lastName        :string;
+    firstName :string;
     
-    @Schema.Test
-    facebookId      :string;
+    lastName :string;
     
-    @Schema.Test
-    get fullName()  :string {
+    facebookId :string;
+   
+    get fullName() :string {
         return `${this.firstName} ${this.lastName}`;
     }
     
-    @Schema.Test
-    public bestFriend :User
+    @User.SuggestsGames
+    suggestions :Game[];
     
-    @Schema.Test
-    public followers :Set<User>;
-    
-    @Schema.Test
-    public following :Set<User>;
-    
-    @Schema.Test
-    public follow(user :User) {
-        var s = new Set();
-        
-        console.log(s.keys());
-        
-        this.following.add(user);
-        user.followers.add(this);
-    }
-    
-    
+    @User.RanksGames
+    rankings :Rank[];
 }
