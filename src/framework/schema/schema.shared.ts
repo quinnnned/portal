@@ -1,6 +1,6 @@
 import {RelationshipSide} from  './relationship-side.shared';
 import {Relationship}     from       './relationship.shared';
-import {Metadata}         from '../metadata/metadata.shared';
+import {Metadata}         from     '../meta/metadata.shared.later';
 
 export class Schema {
 

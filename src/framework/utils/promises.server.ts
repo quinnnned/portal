@@ -18,7 +18,7 @@ export var ParallelAll = (
         let promises :Promise<any>[] = promiseFactories.map((factory) => { 
             let promise :Promise<any> = factory(); 
             return promise;
-        })
+        });
         
         // Merge promises
         return Promise.all(promises);

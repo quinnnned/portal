@@ -6,6 +6,8 @@ var Context = {
     Child  : 'child'
 }
 
+export var A = SemanticRelationshipBuilder.A;
+
 export class SemanticRelationshipBuilder {
     
     private context = Context.Parent;
@@ -34,18 +36,18 @@ export class SemanticRelationshipBuilder {
     
     public one(
         propertyKey :string
-    ) :SemanticRelationshipBuilder | Relationship { 
+    ) :SemanticRelationshipBuilder { 
         this.contextSide.setPropertyKey(propertyKey);
         this.contextSide.setPropertyAsScalar();
-        return this.thisOrRelationship();   
+        return this;
     }
     
     public many(
         propertyKey :string
-    ) :SemanticRelationshipBuilder | Relationship { 
+    ) :SemanticRelationshipBuilder { 
         this.contextSide.setPropertyKey(propertyKey);
         this.contextSide.setPropertyAsArray();
-        return this.thisOrRelationship();
+        return this;
     }
     
     public get and() :SemanticRelationshipBuilder { 
@@ -66,6 +68,10 @@ export class SemanticRelationshipBuilder {
         return this; 
     }
     
+    public getRelationship() {
+        return this.relationship;
+    }
+    
     private get contextSide() :RelationshipSide {
         return this.relationship[this.context];
     }
@@ -73,10 +79,5 @@ export class SemanticRelationshipBuilder {
     private switchToChildContext() :void {
         this.context = Context.Child;    
     }  
-    
-    private thisOrRelationship() :SemanticRelationshipBuilder | Relationship {
-        return this.context == Context.Parent ? this : this.relationship;
-    }
 }
 
-export var A = SemanticRelationshipBuilder.A;

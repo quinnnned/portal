@@ -1,16 +1,16 @@
 import {Component, View, NgFor} from 'angular2/angular2';
 import {ROUTER_DIRECTIVES, RouteConfig, Location} from 'angular2/router';
-import {LiveFramework, Portal, My} from './bits/framework/index.client';
+//import {LiveFramework, Portal, My} from './bits/framework/index.client';
 import {Index} from './components/index/index.client';
 import {Games} from './components/games/games.client';
-import {Search} from './components/search/search.client';
+//import {Search} from './components/search/search.client';
 import {NavigationBar} from './components/nav/nav.client';
 import {Game} from './model/game.shared';
 import {getDataClasses} from '../framework/init.shared';
 
 @Component({
-    selector: 'app', 
-    providers: [LiveFramework, Portal]
+    selector: 'app'
+    //,providers: [LiveFramework, Portal]
 })
 @View({ 
     directives: [ROUTER_DIRECTIVES, NavigationBar],
@@ -41,19 +41,21 @@ import {getDataClasses} from '../framework/init.shared';
 @RouteConfig([
     { path: '/', redirectTo: '/index'},
     { path: '/index', as: 'Index', component: Index},
-    { path: '/games', as: 'Games', component: Games},
-    { path: '/*wildcard', component: Search} 
+    { path: '/games', as: 'Games', component: Games}
+    //,{ path: '/*wildcard', component: Search} 
 ])
 
 export class AppComponent { 
     
-    public my:My;
+    //public my:My;
     
     public colors:any[];
    
-    constructor(private LiveFramework:LiveFramework) {
+    constructor(
+        //private LiveFramework:LiveFramework
+        ) {
         
-        this.my = LiveFramework.my;
+        //this.my = LiveFramework.my;
         
         //var thing = new Game();
         
