@@ -1,4 +1,5 @@
 import {Metadata} from './metadata.shared';
+import {Decoration} from './decoration.shared';
 
 export class MetaSystem { 
     
@@ -8,7 +9,7 @@ export class MetaSystem {
     
     public getDecorator(key :string, value :any) {
         var fullKey = this.prefix + key;
-        return Metadata.Decorate(fullKey, value);
+        return Decoration.Metadata(fullKey, value);
     }
     
     public getSubsystem(subprefix: string) {

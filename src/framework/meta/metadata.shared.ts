@@ -1,4 +1,4 @@
-import '../utils/reflect.shared';
+import './reflect.shared';
 
 export class Metadata {
     
@@ -17,16 +17,6 @@ export class Metadata {
         return Reflect.getMetadata(metadataKey, target, fieldKey);
     }
    
-    public static DecorateMultiple = Reflect.decorate;
-    
-    public static Decorate(key :string, value :string) {
-        return (target :Object, propertyKey? :string|symbol) => {
-            Reflect.decorate([
-                Reflect.metadata(key, value)
-            ], target, propertyKey);
-        }
-    }
-    
     public static PrintAll(cls, fieldKeys=[], log=null) {
         log = log || console.log;
         fieldKeys.unshift(undefined);
