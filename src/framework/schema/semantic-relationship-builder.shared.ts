@@ -1,20 +1,11 @@
 import { RelationshipSide } from  './relationship-side.shared';
 import { Relationship }     from       './relationship.shared';
 
-var Context = {
-    Parent : 'parent',
-    Child  : 'child'
-}
-
-export var A = SemanticRelationshipBuilder.A;
-
+// might need to move this down
 export class SemanticRelationshipBuilder {
     
-    private context = Context.Parent;
-    
-    // Syntactic Sugar
-    public static An = SemanticRelationshipBuilder.A;
-    
+    private isParentContext = true;
+   
     // Use this as entry point
     public static A(vertexClass) {
         // Some DI might be nice here
@@ -29,6 +20,10 @@ export class SemanticRelationshipBuilder {
     
     constructor( private relationship :Relationship ) {}
     
+    public getRelationship() : Relationship{
+        return this.relationship;
+    }
+    
     public a(vertexClass) :SemanticRelationshipBuilder { 
         this.contextSide.setVertexClass(vertexClass);
         return this;        
@@ -39,7 +34,7 @@ export class SemanticRelationshipBuilder {
     ) :SemanticRelationshipBuilder { 
         this.contextSide.setPropertyKey(propertyKey);
         this.contextSide.setPropertyAsScalar();
-        return this;
+        return this;   
     }
     
     public many(
@@ -68,16 +63,14 @@ export class SemanticRelationshipBuilder {
         return this; 
     }
     
-    public getRelationship() {
-        return this.relationship;
-    }
-    
     private get contextSide() :RelationshipSide {
-        return this.relationship[this.context];
+        return this.isParentContext 
+             ? this.relationship.parent 
+             : this.relationship.child;
     }
     
     private switchToChildContext() :void {
-        this.context = Context.Child;    
-    }  
+        this.isParentContext = false;
+    }    
 }
 

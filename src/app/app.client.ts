@@ -6,7 +6,6 @@ import {Games} from './components/games/games.client';
 //import {Search} from './components/search/search.client';
 import {NavigationBar} from './components/nav/nav.client';
 import {Game} from './model/game.shared';
-import {getDataClasses} from '../framework/init.shared';
 
 @Component({
     selector: 'app'

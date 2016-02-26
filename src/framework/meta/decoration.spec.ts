@@ -2,24 +2,31 @@ import {Decoration} from './decoration.shared';
 import {Metadata}   from   './metadata.shared';
 
 describe('Decoration', () => {
-    let TestClass, testInstance;
+    let TestClass, testInstance, DecorateMetadata;
     
     beforeAll(() => {
+        let DecorateMetadata = (k,v) => {
+            return Decoration.Decorate((t,p)=>{
+                let c = p ? t.constructor : t;
+                Metadata.Set(k,v,c,p);
+            });
+        }
+        
         let CompositeDecorator = Decoration.Compose([
-            Decoration.Metadata('compMetaKey1', 'compMetaVal1'),
-            Decoration.Metadata('compMetaKey2', 'compMetaVal2'),
-            Decoration.Metadata('compMetaKey3', 'compMetaVal3')
+            DecorateMetadata('compMetaKey1', 'compMetaVal1'),
+            DecorateMetadata('compMetaKey2', 'compMetaVal2'),
+            DecorateMetadata('compMetaKey3', 'compMetaVal3')
         ]);
         
-        @Decoration.Metadata('classMetaKey', 'classMetaValue')
+        @DecorateMetadata('classMetaKey', 'classMetaValue')
         @CompositeDecorator
         class DecoratedClass {
             
-            @Decoration.Metadata('propMetaKey', 'propMetaValue')
+            @DecorateMetadata('propMetaKey', 'propMetaValue')
             @CompositeDecorator
             public decoratedProperty :string;
             
-            @Decoration.Metadata('methodMetaKey', 'methodMetaValue')
+            @DecorateMetadata('methodMetaKey', 'methodMetaValue')
             @CompositeDecorator
             public decoratedMethod(i :number) :string { return 'foo'; }
         }
@@ -32,11 +39,7 @@ describe('Decoration', () => {
     it('should exist', () => {
         expect(Decoration).toBeDefined();
     });
-    
-    it('has a static method for metadata decoration', () => {
-        expect(Decoration.Metadata).toBeDefined();
-    });
-    
+ 
     it('can set class metadata through decoration', () => {
         expect(Metadata.Get('classMetaKey', TestClass)).toBe('classMetaValue');
     });
@@ -77,5 +80,9 @@ describe('Decoration', () => {
             .toBe('compMetaVal2');
         expect(Metadata.Get('compMetaKey3', TestClass, 'decoratedMethod'))
             .toBe('compMetaVal3');
-    }); 
+    });
+    
+    it('can define a decorator that updates existing metadata', () => {
+        
+    });
 });

@@ -10,7 +10,7 @@ export class Relationship {
     
     get isSymmetric() { return this._isSymmetric; }
     
-    get parent()    { return this._parent; }
+    get parent() { return this._parent; }
     
     get child() { 
         // Enforce symmetry

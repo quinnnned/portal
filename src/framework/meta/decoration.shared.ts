@@ -12,11 +12,15 @@ export class Decoration {
         };
     }
     
-    public static Metadata(key :string, value :string) {
-        return (target :Object, propertyKey? :string|symbol) => {
-            Reflect.decorate([
-                Reflect.metadata(key, value)
-            ], target, propertyKey);
+    /**
+     * This might be silly, but making TypeScript happy with decorators is
+     * an enormous pain.
+     */ 
+    public static Decorate(f :Function) {
+        return (target :Object, propertyKey? :string|symbol, descriptor?) :any=> {
+            let result = f(target, propertyKey, descriptor);
+            if (result) return result;
+            return;
         }
     }
 }

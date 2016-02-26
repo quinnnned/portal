@@ -2,14 +2,14 @@ import {A, Schema} from '../../framework/index.shared';
 import {Game}      from                './game.shared';
 import {Rank}      from                './rank.shared';
 
-@Schema.Group('Users')
+@Schema.Table('Users')
 export class User {
     static SuggestsGames = A(User).has.many('suggestions').but.a(Game).has.one('suggester');
     static RanksGames    = A(User).has.many('rankings').but.a(Rank).has.one('ranker');
     
-    firstName :string;
+    firstName  :string;
     
-    lastName :string;
+    lastName   :string;
     
     facebookId :string;
    
