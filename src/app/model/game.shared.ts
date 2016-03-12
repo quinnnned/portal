@@ -1,12 +1,25 @@
 import { Schema } from '../../framework/index.shared';
-import { User }   from                './user.shared';
-import { Rank }   from                './rank.shared';
-
-@Schema.Table('Games')
+@Schema.Table('games')
 export class Game {
-    name     :string;
-    igdb_id  :string;
-    keywords :string;
-    cover    :string;
-    summary  :string;
+    
+    @Schema.Field
+    public name :string;
+    
+    @Schema.Field
+    public igdb_id :string;
+    
+    @Schema.Field
+    public keywords :string;
+    
+    @Schema.Field
+    public cover :string;
+    
+    @Schema.Field
+    public summary :string;
+    
+    @Schema.Relationship
+    public suggester;
+    
+    @Schema.Relationship
+    public rankings;
 }

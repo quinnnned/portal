@@ -1,0 +1,56 @@
+import { SemanticRelationshipBuilder }
+  from './semantic-relationship-builder.shared';
+import { Relationship }     from './relationship.shared';
+import { RelationshipSide } from './relationship-side.shared';
+
+describe('SemanticRelationshipBuilder', () => {
+    it('should exist', () => {
+        expect(SemanticRelationshipBuilder).toBeDefined();
+    });
+    
+    it('should be able to return the Relationship object that was passed to its constructor', () => {
+        // I hate this.
+        let mockRel = new Relationship(
+            new RelationshipSide(), 
+            new RelationshipSide()
+        );
+        let builder = new SemanticRelationshipBuilder(mockRel);
+        expect(builder.getRelationship).toEqual(jasmine.any(Function)); 
+        expect(builder.getRelationship()).toBe(mockRel);
+    });
+    
+    it('should have a static method A() for the starting point', () => {
+        expect(SemanticRelationshipBuilder.A).toEqual(jasmine.any(Function)); 
+    });
+    
+    it('should return a Sem Rel Builder instance from A()', () => {
+        expect(SemanticRelationshipBuilder.A()).toEqual(jasmine.any(SemanticRelationshipBuilder));
+    });
+    
+    it('should generate a Relationship with A()', () => {
+        expect(SemanticRelationshipBuilder.A().getRelationship()).toEqual(jasmine.any(Relationship))
+    });
+    
+    it('can set the relationship parent class with A(class)', () => {
+        let A = SemanticRelationshipBuilder.A;
+        
+        class MyClass {}
+        
+        expect(A(MyClass)
+            .getRelationship()
+            .parent
+            .getClass()
+        ).toBe(MyClass);
+    });
+    
+    it('can set the parent fieldKey with .one(key)', () => {
+        class MyClass {}
+        let builder = SemanticRelationshipBuilder.A(MyClass);
+        
+        expect(builder.one).toEqual(jasmine.any(Function));
+        builder.one('myField');
+        
+        expect(builder.getRelationship().parent.getFieldKey())
+            .toBe('myField');
+    });
+});

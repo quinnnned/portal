@@ -96,6 +96,18 @@ describe('Metadata', () => {
       expect(Metadata.Get('key', MyClass, 'myField')).toEqual(['k','l','m']);
    });
    
+   it('can set and get object-valued metadata', () => {
+      class MyClass { myField }
+      let a = new MyClass();
+      let b = new MyClass();
+      Metadata.Set('key', a, MyClass);
+      Metadata.Set('key', b, MyClass, 'myField');
+      
+      expect(Metadata.Get('key', MyClass)).toBe(a);
+      expect(Metadata.Get('key', MyClass, 'myField')).toBe(b);
+   });
+   
+   
    it('can update existing class or field metadata', () => {
       class MyClass{ myField }
       Metadata.Set('key', 1, MyClass);
@@ -121,5 +133,8 @@ describe('Metadata', () => {
       expect(Metadata.Get('classMetaKey', MyClass, 'myField')).not.toBeDefined();
       expect(Metadata.Get('classMetaKey', MyClass)).toBe(6);
    });
+   
+   
+   
    
 });

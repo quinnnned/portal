@@ -4,7 +4,7 @@ export class Metadata {
     
     public static Has(cls, fieldKey? :string) :boolean{
         let target = fieldKey ? cls.prototype : cls;
-        return Reflect.getMetadataKeys(target, fieldKey).length > 0;
+        return !!Reflect.getMetadataKeys(target, fieldKey).length;
     }
     
     public static Set(
@@ -63,10 +63,8 @@ export class Metadata {
             log(`Metadata for ${cls.name}${suffix}`);
             Reflect.getMetadataKeys(target, fieldKey).forEach((key)=>{
                 let value = Reflect.getMetadata(key, target, fieldKey);
-                log(`  "${key}" : ${value}`);
+                log(`  "${key}" : ${value} : ${JSON.stringify(value)}`);
             });
         });
     }
-    
-    
 }

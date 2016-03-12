@@ -1,5 +1,6 @@
-import { SchemaDecorators }     from            './schema.shared';
-import { MetaSystem }           from '../meta/meta-system.shared';
+import { SchemaDecorators }      from './schema-decorators.shared';
+import { Ship }          from './ship.shared';
+import { MetaSystem }            from '../meta/meta-system.shared';
 
 describe('SchemaDecorators', () => {
     
@@ -47,12 +48,4 @@ describe('SchemaDecorators', () => {
         
         expect(Schema.GetFields(TestClass)).toEqual(['myFieldA']);
     });
-    
-    
-    
-    // can get and decorate-set a property relationship
-    
-    
-    
-    
 });

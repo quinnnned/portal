@@ -1,0 +1,39 @@
+import { Decoration } from  '../meta/decoration.shared';
+import { MetaValue }  from  '../meta/meta-value.shared';
+
+import { SchemaDecorators } from './schema-decorators.shared';
+import { Relationship }     from './relationship.shared';
+import { ShipPort }         from         './ship-port.shared';
+
+
+export class Ship {
+    
+    constructor(
+        private relMeta :MetaValue,
+        private rel     :Relationship
+    ) {}
+    
+    public get Relationship() { return this.rel; }
+    
+    public get Symmetric() {
+        return Decoration.Compose([ this.Forward, this.Reverse ]);
+    }
+    
+    public get Forward() {
+        return Decoration.Decorate( (proto, fieldKey) => {
+            let cls  = proto.constructor,
+                port = ShipPort.FromClassFieldPair(cls, fieldKey);
+            this.rel.setParentPort(port);
+            this.relMeta.set(this.rel, cls, fieldKey);
+        });
+    }
+    
+    public get Reverse() {
+        return Decoration.Decorate( (proto, fieldKey) => {
+            let cls  = proto.constructor,
+                port = ShipPort.FromClassFieldPair(cls, fieldKey);
+            this.rel.setChildPort(port);
+            this.relMeta.set(this.rel, cls, fieldKey);
+        });
+    }
+}

@@ -1,7 +1,7 @@
 import { MetaSystem } from './meta-system.shared';
 import { MetaValue }  from  './meta-value.shared';
 
-describe('MetaValue', ()=>{
+describe('MetaValue', () => {
    it('should exist', () => {
        expect(MetaValue).toBeDefined();
    });

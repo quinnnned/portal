@@ -15,6 +15,11 @@ export class MetaValue {
         return this.meta.get(this.key, cls, fieldKey);
     }
     
+    // UNIT TEST THIIIIIS
+    public update(updater :Function, cls :Function, fieldKey? :string) :any {
+        return this.meta.update(this.key, updater, cls, fieldKey);
+    }
+    
     public decorate(value :any) {
         return this.meta.decorateSet(this.key, value);
     }

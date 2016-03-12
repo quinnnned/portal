@@ -1,0 +1,19 @@
+export interface Relationship {
+    isSymmetric               :boolean;
+    // setParentClass(Function)  :void;
+    // getParentClass()          :Function;
+    // setParentField(string)    :void;
+    // getParentField()          :string;
+    // setParentIsMany(boolean)  :void;
+    // getParentIsMany()         :boolean;
+    // setChildClass(Function)   :void;
+    // getChildClass()           :Function;
+    // setChildField(string)     :void;
+    // getChildField()           :string;
+    // setChildIsMany(boolean)   :void;
+    // getChildIsMany()          :boolean;
+    setParentPort(ShipPort) :void;
+    getParentPort()         :ShipPort;
+    setChildPort(ShipPort)  :void;
+    getChildPort()          :ShipPort;
+}

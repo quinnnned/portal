@@ -1,17 +1,16 @@
-import {A, Schema} from '../../framework/index.shared';
-import {Game}      from                './game.shared';
-import {Rank}      from                './rank.shared';
+import { Schema } from '../../framework/index.shared';
 
-@Schema.Table('Users')
+@Schema.Table('users')
 export class User {
-    static SuggestsGames = A(User).has.many('suggestions').but.a(Game).has.one('suggester');
-    static RanksGames    = A(User).has.many('rankings').but.a(Rank).has.one('ranker');
     
-    firstName  :string;
+    @Schema.Field
+    public firstName :string;
     
-    lastName   :string;
+    @Schema.Field
+    public lastName :string;
     
-    facebookId :string;
+    @Schema.Field
+    public facebookId :string;
    
     get fullName() :string {
         return `${this.firstName} ${this.lastName}`;
@@ -23,9 +22,9 @@ export class User {
         this.lastName  = nameParts.pop(); 
     }
     
-    //@Schema.Relationship(User.SuggestsGames)
-    suggestions :Game[];
+    @Schema.Relationship
+    public suggestions;
     
-    //@Schema.Relationship(User.RanksGames)
-    rankings :Rank[];
+    @Schema.Relationship
+    public rankings;
 }

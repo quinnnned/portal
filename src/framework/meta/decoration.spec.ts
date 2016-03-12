@@ -5,10 +5,10 @@ describe('Decoration', () => {
     let TestClass, testInstance, DecorateMetadata;
     
     beforeAll(() => {
-        let DecorateMetadata = (k,v) => {
-            return Decoration.Decorate((t,p)=>{
+        let DecorateMetadata = (k, v) => {
+            return Decoration.Decorate( (t, p) => {
                 let c = p ? t.constructor : t;
-                Metadata.Set(k,v,c,p);
+                Metadata.Set(k, v, c, p);
             });
         }
         

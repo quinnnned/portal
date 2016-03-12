@@ -1,11 +1,14 @@
-import {Schema} from '../../framework/index.shared';
-import {Game}   from                './game.shared';
-import {User}   from                './user.shared';
+import { Schema } from '../../framework/index.shared';
 
-@Schema.Table('Ranks')
+@Schema.Table('ranks')
 export class Rank {
+
+    @Schema.Field
     public weight :number;
     
-    //@User.Prefers
-    public preferer: User; 
+    @Schema.Relationship
+    public ranker;
+    
+    @Schema.Relationship
+    public game;
 }
